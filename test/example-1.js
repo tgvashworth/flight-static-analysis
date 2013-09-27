@@ -1,0 +1,1 @@
+this.on('someNiceEvent', this.doAThing);

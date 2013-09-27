@@ -1,0 +1,16 @@
+{
+  "name": "flanel",
+  "version": "0.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {},
+  "bin": {
+    "flanel": "index.js"
+  },
+  "author": "Tom Ashworth <ta@twitter.com>",
+  "license": "BSD-2-Clause",
+  "dependencies": {
+    "optimist": "~0.6.0",
+    "falafel": "~0.3.1"
+  }
+}
