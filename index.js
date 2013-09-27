@@ -73,7 +73,9 @@ var processFile = function (file) {
         node.parent.type === 'CallExpression' &&
         node.parent.callee.property &&
         node.parent.callee.property.name in eventMethods) {
-      events.for(node.parent.callee.property.name).inc(node.value);
+      node.value.split(' ').forEach(function (evName) {
+        events.for(node.parent.callee.property.name).inc(evName);
+      });
     }
   });
 
@@ -97,7 +99,7 @@ process.stdin.pipe(through(function (filenames) {
       .split('\n')
       .filter(function (f) { return !!f.length; });
 
-  // Read & process each file, then queue the result
+  // Read & process each file, then queue the resulte
   filteredNames
     .map(read)
     .map(processFile)
