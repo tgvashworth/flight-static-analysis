@@ -2,6 +2,7 @@
 
 var fs = require('fs');
 var argv = require('optimist').argv;
+var through = require('through')
 
 var falafel = require('falafel');
 
@@ -61,8 +62,7 @@ var eventMethods = {
   trigger: true
 };
 
-// Read the files & process them with falafel
-var data = argv._.map(read).reduce(function (memo, file, i) {
+var processFile = function (file) {
   // Create a new store for this file
   var events = Object.create(store).init();
 
@@ -78,8 +78,32 @@ var data = argv._.map(read).reduce(function (memo, file, i) {
   });
 
   // If we found some events, save it to our data
-  if (!events.isEmpty()) memo[argv._[i]] = events.toObject();
-  return memo;
-}, {});
+  if (!events.isEmpty()) return events.toObject();
+};
 
-console.log(JSON.stringify(data, null, 2));
+var output = function (name, data) {
+  return JSON.stringify({
+    name: name,
+    data: data
+  }) + '\n';
+};
+
+process.stdin.pipe(through(function (filenames) {
+
+  // Produce an array of useful filenames
+  var filteredNames =
+    filenames
+      .toString()
+      .split('\n')
+      .filter(function (f) { return !!f.length; });
+
+  // Read & process each file, then queue the result
+  filteredNames
+    .map(read)
+    .map(processFile)
+    .filter(function (v) { return !!v; })
+    .forEach(function (result, i) {
+      this.queue(output(filteredNames[i], result));
+    }.bind(this));
+
+})).pipe(process.stdout);
