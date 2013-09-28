@@ -2,7 +2,8 @@
 
 var fs = require('fs');
 var argv = require('optimist').argv;
-var through = require('through')
+var through = require('through');
+var store = require('dirty-store');
 
 var falafel = require('falafel');
 
@@ -14,46 +15,6 @@ var read = function (f) {
   return fs.readFileSync(f, {
     encoding: 'utf-8'
   });
-};
-
-/**
- * Recursive data score.
- */
-var store = {
-  init: function () {
-    this._ = {};
-    return this;
-  },
-  inc: function (id) {
-    if (!this._[id]) this._[id] = 0;
-    this._[id] += 1;
-    return this;
-  },
-  dec: function (id) {
-    if (!this._[id]) this._[id] = 0;
-    this._[id] -= 1;
-    return this;
-  },
-  set: function (id, amt) {
-    this._[id] = amt;
-    return this;
-  },
-  add: function (id) {
-    this._[id] = this._[id] || Object.create(store).init();
-    return this._[id];
-  },
-  for: function (id) {
-    return this.add(id);
-  },
-  toObject: function () {
-    return Object.keys(this._).reduce(function (memo, key) {
-      memo[key] = (this._[key].toObject ? this._[key].toObject() : this._[key]);
-      return memo;
-    }.bind(this), {});
-  },
-  isEmpty: function () {
-    return Object.keys(this._).length === 0;
-  }
 };
 
 // Valid events
