@@ -1,9 +1,10 @@
-#! /usr/bin/env node
+#!/usr/bin/env node
 
 var fs = require('fs');
 var argv = require('optimist').argv;
 var through = require('through');
 var store = require('dirty-store');
+var _ = require('lodash');
 
 var falafel = require('falafel');
 
@@ -17,31 +18,37 @@ var read = function (f) {
   });
 };
 
-// Valid events
-var eventMethods = {
-  on: true,
-  trigger: true
+/**
+ * Grab a plugin
+ */
+var plugin = function (name) {
+  return require('./plugin/' + name);
 };
+
+/**
+ * Default plugins.
+ * TODO make this come from args
+ */
+var plugins = [
+  'event',
+  'mixin',
+  'dependency',
+  'method',
+  // 'inspect',
+];
 
 var processFile = function (file) {
   // Create a new store for this file
-  var events = Object.create(store).init();
+  var data = Object.create(store).init();
 
   // Depth-first traversal of the file's AST
   falafel(file, function (node) {
-    if (node.type === 'Literal' &&
-        node.parent &&
-        node.parent.type === 'CallExpression' &&
-        node.parent.callee.property &&
-        node.parent.callee.property.name in eventMethods) {
-      node.value.split(' ').forEach(function (evName) {
-        events.for(node.parent.callee.property.name).inc(evName);
-      });
-    }
+    plugins.forEach(function (pluginName) {
+      plugin(pluginName)(file, node, data);
+    });
   });
 
-  // If we found some events, save it to our data
-  if (!events.isEmpty()) return events.toObject();
+  return data.toObject();
 };
 
 var output = function (name, data) {

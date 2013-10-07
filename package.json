@@ -13,6 +13,8 @@
     "optimist": "~0.6.0",
     "falafel": "~0.3.1",
     "through": "~2.3.4",
-    "dirty-store": "0.0.1"
+    "dirty-store": "0.0.1",
+    "lodash": "~2.2.1",
+    "json-stringify-safe": "~5.0.0"
   }
 }
