@@ -1,11 +1,11 @@
 {
-  "name": "flanel",
+  "name": "flannel",
   "version": "0.0.0",
   "description": "",
   "main": "index.js",
   "scripts": {},
   "bin": {
-    "flanel": "index.js"
+    "flannel": "index.js"
   },
   "author": "Tom Ashworth <ta@twitter.com>",
   "license": "BSD-2-Clause",
