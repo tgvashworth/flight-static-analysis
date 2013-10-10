@@ -1,4 +1,4 @@
-# flanel
+# flannel
 
 Very basic static analysis tool for event-driven JavaScript.
 
@@ -7,7 +7,7 @@ Operates on a stream of files, outputs a new-line delimited stream of JSON.
 ### Plan
 
 - Find events listened for and triggered
-- Make events searchable ([flanel-search](#))
+- Make events searchable ([flannel-search](#))
 - Group files by event
 - Map event usage (ie, on this event, what gets triggered?)
 - Graph dependencies and event interaction
@@ -15,7 +15,7 @@ Operates on a stream of files, outputs a new-line delimited stream of JSON.
 ## Install
 
 ```shell
-$ npm install -g flanel flanel-search
+$ npm install -g flannel flannel-inspect
 ```
 
 ## Usage
@@ -23,7 +23,7 @@ $ npm install -g flanel flanel-search
 `cd` to your project's folder.
 
 ```shell
-find . -name '*.js' -print | flanel | flanel-search click
+find . -name '*.js' -print | flannel | flannel-inspect
 ```
 
 ### Trying it out
@@ -31,7 +31,7 @@ find . -name '*.js' -print | flanel | flanel-search click
 If you've cloned this project, try this:
 
 ```shell
-$ flanel < test/files.txt | flanel-search click
+$ flannel < test/files.txt | flannel-inspect
 ```
 
 You should see something like this:
