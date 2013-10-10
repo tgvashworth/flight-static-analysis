@@ -19,6 +19,9 @@ this.methodF = (function () {
   };
 }());
 
+var methodG = function () {};
+this.methodG = methodG;
+
 this.fakeA = 10;
 this.fakeB = 'Hello world!';
 this.fakeC = (function () { return 20; }());

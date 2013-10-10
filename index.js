@@ -22,7 +22,13 @@ var read = function (f) {
  * Grab a plugin
  */
 var plugin = function (name) {
-  return require('./plugin/' + name);
+  try {
+    return require('./plugin/' + name);
+  } catch (e) {
+    return function (file, node, data) {
+      data.set('error', 'Missing plugin "' + name + '"');
+    };
+  }
 };
 
 /**
@@ -30,11 +36,14 @@ var plugin = function (name) {
  * TODO make this come from args
  */
 var plugins = [
+  // 'inspect',
   'event',
   'mixin',
   'dependency',
   'method',
-  // 'inspect',
+  'defaultAttrs',
+  'selector',
+  'domClimbing',
 ];
 
 var processFile = function (file) {
