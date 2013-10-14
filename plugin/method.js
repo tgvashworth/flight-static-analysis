@@ -1,4 +1,5 @@
 var _ = require('lodash');
+var u = require('../plugin-util');
 
 /**
  * Methods
@@ -52,11 +53,7 @@ var tryIsDot = function (file, node, data) {
  */
 
 var isNodeSomethingDotBind = function (node) {
-  return (node.type === 'CallExpression' &&
-          node.callee &&
-          node.callee.property &&
-          node.callee.property.name === 'bind' &&
-          node.callee.object);
+  return (u.isCallTo(node, '*', 'bind'));
 };
 
 var tryIsSomethingDotBind = function (file, node, data) {

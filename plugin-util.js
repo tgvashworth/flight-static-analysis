@@ -11,7 +11,7 @@ var propValue = function (property) {
   return property[propertyKey];
 };
 
-var objectName = function (object) {
+exports.objectName = function (object) {
   if (object.type === 'ThisExpression') return 'this';
   if (object.value) return object.value;
   return object.name;
@@ -35,7 +35,7 @@ exports.isCallTo = function (node) {
   var callee = node.callee;
   if (!callee) return false;
 
-  var calleeMethod = objectName(callee.property || callee);
+  var calleeMethod = exports.objectName(callee.property || callee);
   if (!_.contains(methods, calleeMethod)) return false;
 
   var currPropArr, lastPropArr, curr = callee;
@@ -50,7 +50,7 @@ exports.isCallTo = function (node) {
     // Support * for any method, jump to next property
     if (_.contains(currPropArr, '*')) continue;
     // The final object will have no property
-    if (!_.contains(currPropArr, objectName(curr.property || curr))) return false;
+    if (!_.contains(currPropArr, exports.objectName(curr.property || curr))) return false;
   }
   // If there are properties left over, or the object we've reached has further objects then
   // we haven't found the correct call – unless the last property array contained a *
