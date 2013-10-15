@@ -44,6 +44,7 @@ var plugins = [
   'defaultAttrs',
   'selector',
   'domClimbing',
+  'jQuery',
 ];
 
 var processFile = function (file) {

@@ -13,7 +13,4 @@ module.exports = function (file, node, data) {
   if (u.isCallTo(node, '*', domMethods)) {
     data.inc('domClimbing');
   }
-  if (u.isCallTo(node, '$')) {
-    data.inc('domClimbing');
-  }
 };
