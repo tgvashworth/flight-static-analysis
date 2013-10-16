@@ -3,6 +3,7 @@
 var fs = require('fs');
 var argv = require('optimist').argv;
 var through = require('through');
+var split = require('split');
 var store = require('dirty-store');
 var _ = require('lodash');
 
@@ -37,6 +38,7 @@ var plugin = function (name) {
  */
 var plugins = [
   // 'inspect',
+  'name',
   'event',
   'mixin',
   'dependency',
@@ -68,22 +70,22 @@ var output = function (name, data) {
   }) + '\n';
 };
 
-process.stdin.pipe(through(function (filenames) {
+var processLine = function (filename) {
 
-  // Produce an array of useful filenames
-  var filteredNames =
-    filenames
-      .toString()
-      .split('\n')
-      .filter(function (f) { return !!f.length; });
+  if (!filename.length) return;
 
-  // Read & process each file, then queue the resulte
-  filteredNames
-    .map(read)
-    .map(processFile)
-    .filter(function (v) { return !!v; })
-    .forEach(function (result, i) {
-      this.queue(output(filteredNames[i], result));
-    }.bind(this));
+  // Read & process the file, then queue the result
+  try {
+    this.queue(output(filename, processFile(read(filename))));
+  } catch (e) {
+    this.queue(output('', {
+      error: 'Failed to process ' + filename
+    }));
+  }
 
-})).pipe(process.stdout);
+};
+
+process.stdin
+  .pipe(split())
+  .pipe(through(processLine))
+  .pipe(process.stdout);

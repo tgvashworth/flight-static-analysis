@@ -4,3 +4,6 @@ test/example-3.js
 test/example-4.js
 test/example-5.js
 test/example-6.js
+test/example-7.js
+test/example-8.js
+test/example-9.js

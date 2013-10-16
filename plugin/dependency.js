@@ -1,10 +1,10 @@
 /**
  * Dependencies
  */
+var u = require('../plugin-util');
+
 module.exports = function (file, node, data) {
-  if (node.type === 'CallExpression' &&
-      node.callee &&
-      node.callee.name === 'define' &&
+  if (u.isCallTo(node, ['define', 'require']) &&
       node.arguments[0] &&
       node.arguments[0].type === 'ArrayExpression') {
     node.arguments[0].elements.forEach(function (elem) {
@@ -13,5 +13,12 @@ module.exports = function (file, node, data) {
       dependencies.push(elem.value);
       data.set('dependencies', dependencies);
     });
+  }
+  if (u.isCallTo(node, 'require') &&
+      node.arguments[0] &&
+      node.arguments[0].type === 'Literal') {
+    var dependencies = data.get('dependencies') || [];
+    dependencies.push(node.arguments[0].value);
+    data.set('dependencies', dependencies);
   }
 };
