@@ -11,3 +11,6 @@ this.trigger('somethingExciting', { some: 'stuff' });
 this.trigger('click', { some: 'stuff' });
 this.trigger('dblclick', { some: 'stuff' });
 this.trigger('click', { some: 'stuff' });
+
+this.on(document, 'documentEvent', this.doADifferentThing);
+this.trigger(document, 'somethingGood', this.doADifferentThing);
