@@ -15,6 +15,23 @@ define([
       return 'no.';
     };
 
+    this.after('initialize', function () {
+      this.on('someoneNeedsMe', this.someNiceMethod);
+      this.trigger('hereToHelp');
+    });
+
+    this.around('niceMixinMethod', function () {
+      return this.someNiceMethod();
+    });
+
+    this.before('somethingTasty', function () {
+      return this.eatIt();
+    });
+
+    this.before('aBadThing', function () {
+      return this.doAGoodThing();
+    });
+
   };
 
   return defineComponent(theThing, niceMixin)

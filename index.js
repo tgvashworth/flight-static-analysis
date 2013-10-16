@@ -41,6 +41,7 @@ var plugins = [
   'name',
   'event',
   'mixin',
+  'advice',
   'dependency',
   'method',
   'defaultAttrs',
