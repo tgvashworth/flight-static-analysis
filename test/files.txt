@@ -7,3 +7,4 @@ test/example-6.js
 test/example-7.js
 test/example-8.js
 test/example-9.js
+test/example-fake.js

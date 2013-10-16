@@ -78,7 +78,7 @@ var processLine = function (filename) {
   try {
     this.queue(output(filename, processFile(read(filename))));
   } catch (e) {
-    this.queue(output('', {
+    this.queue(output(filename, {
       error: 'Failed to process ' + filename
     }));
   }
