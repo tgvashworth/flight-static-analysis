@@ -4,6 +4,10 @@ exports.isCall = function (node) {
   return (node.type === "CallExpression");
 };
 
+exports.isObject = function (node) {
+  return node.type === 'ObjectExpression';
+};
+
 var propValue = function (property) {
   var propertyKey = 'name';
     // Support literals or identifiers (['blah'] or .blah)
@@ -58,8 +62,4 @@ exports.isCallTo = function (node) {
   if (properties.length || (curr && curr.property)) return false;
 
   return true;
-};
-
-exports.isObject = function (node) {
-  return node.type === 'ObjectExpression';
 };
