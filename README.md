@@ -14,9 +14,7 @@ Operates on a stream of files, outputs a new-line delimited stream of JSON.
 
 ## Install
 
-```shell
-$ npm install -g flannel flannel-inspect
-```
+Clone this repo and [flannel-inspect](https://github.com/phuu/flannel-inspect), and run `npm link` in both.
 
 ## Usage
 
@@ -31,9 +29,5 @@ find . -name '*.js' -print | flannel | flannel-inspect
 If you've cloned this project, try this:
 
 ```shell
-$ flannel < test/files.txt | flannel-inspect
+$ cat test/files.txt | flannel | flannel-inspect
 ```
-
-You should see something like this:
-
-![example output](https://i.cloudup.com/Jnlj2TcW2l-3000x3000.png)
