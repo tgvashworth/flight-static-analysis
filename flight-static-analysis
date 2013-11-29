@@ -27,7 +27,9 @@ var plugin = function (name) {
     return require('./plugin/' + name);
   } catch (e) {
     return function (file, node, data) {
-      data.set('error', 'Missing plugin "' + name + '"');
+      var error = data.get('error') || [];
+      error.push('Missing plugin "' + name + '"')
+      data.set('error', error);
     };
   }
 };
@@ -72,7 +74,6 @@ var output = function (name, data) {
 };
 
 var processLine = function (filename) {
-
   if (!filename.length) return;
 
   // Read & process the file, then queue the result
@@ -83,7 +84,6 @@ var processLine = function (filename) {
       error: 'Failed to process ' + filename
     }));
   }
-
 };
 
 process.stdin

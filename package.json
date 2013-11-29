@@ -1,11 +1,12 @@
 {
-  "name": "flannel",
+  "name": "flight-static-analysis",
   "version": "0.0.0",
   "description": "",
   "main": "index.js",
   "scripts": {},
   "bin": {
-    "flannel": "index.js"
+    "flight-static-analysis": "flight-static-analysis",
+    "flight-static": "flight-static-analysis"
   },
   "author": "Tom Ashworth <ta@twitter.com>",
   "license": "BSD-2-Clause",
