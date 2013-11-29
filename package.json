@@ -2,14 +2,13 @@
   "name": "flight-static-analysis",
   "version": "0.0.0",
   "description": "",
-  "main": "index.js",
-  "scripts": {},
+  "preferGlobal": true,
   "bin": {
     "flight-static-analysis": "flight-static-analysis",
     "flight-static": "flight-static-analysis"
   },
   "author": "Tom Ashworth <ta@twitter.com>",
-  "license": "BSD-2-Clause",
+  "license": "MIT",
   "dependencies": {
     "optimist": "~0.6.0",
     "falafel": "~0.3.1",
