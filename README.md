@@ -29,7 +29,7 @@ tree-watch . "**/*.js" | flight-static-analysis | json-stream-inspect
 For TweetDeck, it looks something like this:
 
 ```shell
-ree-watch ./client/web/scripts/swift/app "**/*.js" | flight-static-analysis | json-stream-inspect
+tree-watch ./client/web/scripts/swift/app "**/*.js" | flight-static-analysis | json-stream-inspect
 ```
 
 ### Trying it out
