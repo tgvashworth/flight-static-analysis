@@ -9,13 +9,23 @@ var eventMethods = [
   'trigger'
 ];
 
-module.exports = function (file, node, data) {
+module.exports = function (file, node, data, argv) {
   if (u.isCallTo(node, '*', eventMethods)) {
     if (!node.arguments) return;
+    var events = data.for('events');
     node.arguments.forEach(function (arg) {
       (arg.value || '').split(' ').forEach(function (evName) {
         if (!evName.length) return;
-        data.for('events').for(node.callee.property.name).inc(evName);
+        events.for('summary').for(node.callee.property.name).inc(evName);
+        if (argv.instances) {
+          var instances = events.get('instances') || [];
+          instances.push({
+            name: evName,
+            method: node.callee.property.name,
+            loc: node.loc
+          });
+          events.set('instances', instances);
+        }
       });
     });
   }

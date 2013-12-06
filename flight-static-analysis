@@ -1,13 +1,30 @@
 #!/usr/bin/env node
 
 var fs = require('fs');
-var argv = require('optimist').argv;
 var through = require('through');
 var split = require('split');
 var store = require('dirty-store');
 var _ = require('lodash');
 
 var falafel = require('falafel');
+var opt = require('optimist')
+    .usage([
+      'Analyse Twitter Flight code. Listens to stdin, pipes JSON to stdout.',
+      '',
+      '  echo "./path/to/file.js" | flight-static-analysis',
+      '',
+      'Reccommended usage:',
+      '  tree-watch ./path/to/flight/code "**/*.js" | flight-static-analysis | json-stream-(socket|server)'
+    ].join('\n'))
+    .alias('i', 'instances')
+    .describe('i', 'Include instance data, if plugin supports it.')
+    .alias('h', 'help')
+    .describe('h', 'Show this help message')
+var argv = opt.argv;
+
+if (argv.h) {
+  return opt.showHelp();
+}
 
 /**
  * Read a file with utf-8 encoding.
@@ -57,9 +74,9 @@ var processFile = function (file) {
   var data = Object.create(store).init();
 
   // Depth-first traversal of the file's AST
-  falafel(file, function (node) {
+  falafel(file, { loc: true }, function (node) {
     plugins.forEach(function (pluginName) {
-      plugin(pluginName)(file, node, data);
+      plugin(pluginName)(file, node, data, argv);
     });
   });
 
@@ -81,7 +98,10 @@ var processLine = function (filename) {
     this.queue(output(filename, processFile(read(filename))));
   } catch (e) {
     this.queue(output(filename, {
-      error: 'Failed to process ' + filename
+      error: {
+        message: 'Failed to process ' + filename,
+        stack: e.stack
+      }
     }));
   }
 };
