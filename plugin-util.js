@@ -21,10 +21,7 @@ exports.objectName = function (object) {
   return object.name;
 };
 
-// Comment this out to turn logging on
-console.log = function () {};
-
-// Is thie node a call to...
+// Is this node a call to...
 // TODO document this
 exports.isCallTo = function (node) {
   if (!exports.isCall(node)) return false;
