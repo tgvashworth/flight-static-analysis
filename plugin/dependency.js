@@ -3,7 +3,7 @@
  */
 var u = require('../plugin-util');
 
-module.exports = function (file, node, data) {
+module.exports = function (file, node, data, argv) {
   if (u.isCallTo(node, ['define', 'require']) &&
       node.arguments[0] &&
       node.arguments[0].type === 'ArrayExpression') {

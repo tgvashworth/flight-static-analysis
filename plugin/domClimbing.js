@@ -9,8 +9,16 @@ var domMethods = [
   'closest'
 ];
 
-module.exports = function (file, node, data) {
+module.exports = function (file, node, data, argv) {
   if (u.isCallTo(node, '*', domMethods)) {
-    data.inc('domClimbing');
+    var dom = data.for('domClimbing');
+    dom.for('summary').inc('count');
+    if (argv.instances) {
+      var instances = dom.get('instances') || [];
+      instances.push({
+        loc: node.loc
+      });
+      dom.set('instances', instances);
+    }
   }
 };

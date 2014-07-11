@@ -56,17 +56,23 @@ var plugin = function (name) {
  * TODO make this come from args
  */
 var plugins = [
-  // 'inspect',
+  //'inspect',
   'name',
   'event',
+  'unbind',
   'mixin',
   'advice',
   'dependency',
   'method',
   'defaultAttrs',
+  'defaultAttrsCount',
+  'requiredDefaultAttrs',
+  'attributes',
+  'attributesCount',
+  'requiredAttributes',
+  'initialisation',
   'selector',
   'domClimbing',
-  'jQuery',
 ];
 
 var processFile = function (file) {
