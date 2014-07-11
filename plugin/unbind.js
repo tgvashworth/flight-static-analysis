@@ -1,12 +1,12 @@
 /**
- * Events
+ * Unbind Events
  */
 var u = require('../plugin-util');
 
 // Valid events
 var eventMethods = [
-  'on',
-  'trigger'
+  'off',
+  'unbind'
 ];
 
 module.exports = function (file, node, data, argv) {

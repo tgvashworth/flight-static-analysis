@@ -16,12 +16,36 @@ var propValue = function (property) {
 };
 
 exports.objectName = function (object) {
+  if (!object) return 'wtf';
   if (object.type === 'ThisExpression') return 'this';
+  if (object.type === 'MemberExpression')
+    return exports.objectName(object.object) + "." + exports.objectName(object.property);
+  if (object.type === 'CallExpression' || object.type === 'BinaryExpression')
+    return object.source();
   if (object.value) return object.value;
   return object.name;
 };
 
-// Is this node a call to...
+// Is this node a to a method containing the supplied string?
+exports.isCallWith = function (node) {
+  if (!exports.isCall(node)) return false;
+
+  var args = [].slice.call(arguments);
+  var part = args.pop();
+
+  var callee = node.callee;
+  if (!callee) return false;
+
+  var calleeMethod = exports.objectName(callee.property || callee);
+  var caller = exports.objectName(callee.object || callee);
+
+  if (!(_.contains(calleeMethod, part) || _.contains(caller, part))) return false;
+
+  return true;
+}
+
+
+// Is thie node a call to...
 // TODO document this
 exports.isCallTo = function (node) {
   if (!exports.isCall(node)) return false;
@@ -37,7 +61,8 @@ exports.isCallTo = function (node) {
   if (!callee) return false;
 
   var calleeMethod = exports.objectName(callee.property || callee);
-  if (!_.contains(methods, calleeMethod)) return false;
+  //if (!_.contains(methods, calleeMethod)) return false;
+  if (!(_.contains(methods, calleeMethod) || _.contains(methods, '*'))) return false;
 
   var currPropArr, lastPropArr, curr = callee;
   while (currPropArr = properties.pop()) {
