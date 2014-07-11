@@ -3,8 +3,9 @@
 var fs = require('fs');
 var through = require('through');
 var split = require('split');
-var store = require('dirty-store');
 var _ = require('lodash');
+
+var fsa = require('./fsa');
 
 var falafel = require('falafel');
 var opt = require('optimist')
@@ -37,21 +38,6 @@ var read = function (f) {
 };
 
 /**
- * Grab a plugin
- */
-var plugin = function (name) {
-  try {
-    return require('./plugin/' + name);
-  } catch (e) {
-    return function (file, node, data) {
-      var error = data.get('error') || [];
-      error.push('Missing plugin "' + name + '"')
-      data.set('error', error);
-    };
-  }
-};
-
-/**
  * Default plugins.
  * TODO make this come from args
  */
@@ -69,20 +55,6 @@ var plugins = [
   'jQuery',
 ];
 
-var processFile = function (file) {
-  // Create a new store for this file
-  var data = Object.create(store).init();
-
-  // Depth-first traversal of the file's AST
-  falafel(file, { loc: true }, function (node) {
-    plugins.forEach(function (pluginName) {
-      plugin(pluginName)(file, node, data, argv);
-    });
-  });
-
-  return data.toObject();
-};
-
 var output = function (name, data) {
   return JSON.stringify({
     name: name,
@@ -95,7 +67,12 @@ var processLine = function (filename) {
 
   // Read & process the file, then queue the result
   try {
-    this.queue(output(filename, processFile(read(filename))));
+    this.queue(
+      output(filename, fsa(read(filename), {
+        plugins: plugins,
+        argv: argv
+      }))
+    );
   } catch (e) {
     this.queue(output(filename, {
       error: {

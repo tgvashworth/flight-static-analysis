@@ -3,6 +3,7 @@
   "version": "0.0.1",
   "description": "",
   "preferGlobal": true,
+  "main":"fsa.js",
   "bin": {
     "flight-static-analysis": "flight-static-analysis",
     "flight-static": "flight-static-analysis"
@@ -15,6 +16,7 @@
     "through": "~2.3.4",
     "dirty-store": "~0.0.3",
     "lodash": "~2.2.1",
+    "split": "~0.3.0",
     "json-stringify-safe": "~5.0.0",
     "async": "~0.2.9"
   }
